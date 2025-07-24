@@ -1,19 +1,32 @@
+const express = require('express');
+const cors = require('cors');
+https://github.com/staggraphic/mini-veo/blob/main/server.js
+const app = express();
+const PORT = process.env.PORT || 1000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('✅ Mini Veo backend is running!');
+});
+
 app.post('/api/generate-video', (req, res) => {
   const { prompt, type, duration } = req.body;
+  console.log('Received:', { prompt, type, duration });
 
-  console.log(`Generating video with prompt: ${prompt}, type: ${type}, duration: ${duration}`);
-
-  // Simulate logic (replace this with your model output in future)
-  const baseUrl = "https://samplelib.com/lib/preview/mp4";
-  const durationMap = {
-    "5": "sample-5s.mp4",
-    "10": "sample-10s.mp4",
-    "15": "sample-15s.mp4",
-    "30": "sample-30s.mp4"
+  const videos = {
+    '5': 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+    '10': 'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
+    '15': 'https://samplelib.com/lib/preview/mp4/sample-15s.mp4',
+    '30': 'https://samplelib.com/lib/preview/mp4/sample-30s.mp4',
   };
-  const videoName = durationMap[duration] || "sample-5s.mp4";
 
   res.json({
-    video_url: `${baseUrl}/${videoName}`
+    video_url: videos[duration] || videos['5']
   });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
